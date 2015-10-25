@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="Main">
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='org.numisoft.gwt.gwtproject.Main' />
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/Main/greet" class="org.numisoft.gwt.gwtproject.server.GreetingServiceImpl" />
+
+</module>
