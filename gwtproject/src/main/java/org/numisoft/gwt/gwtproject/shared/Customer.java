@@ -1,8 +1,8 @@
-package org.numisoft.gwt.gwtproject.client;
+package org.numisoft.gwt.gwtproject.shared;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class Customer implements Serializable {
+public class Customer implements IsSerializable {
 
 	String firstName;
 	String lastName;

@@ -1,8 +1,11 @@
 package org.numisoft.gwt.gwtproject.client;
 
+import org.numisoft.gwt.gwtproject.shared.Customer;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -16,22 +19,60 @@ public class Main implements EntryPoint {
 
 		Label label1 = new Label();
 		label1.setText("MY TEXT HERE");
-
 		RootPanel.get().add(label1);
 
-		greetingService.greetServer("Tom", new AsyncCallback<Customer>() {
+		greetingService.greetServer("Tom", new AsyncCallback<Customer[]>() {
 			@Override
 			public void onFailure(Throwable caught) {
+				String details = caught.getMessage();
+
 				Label label2 = new Label();
-				label2.setText("FAIL!!!");
+
+				label2.setText("Error: " + details);
 				RootPanel.get().add(label2);
 			}
 
 			@Override
-			public void onSuccess(Customer customer) {
-				Label label2 = new Label();
-				label2.setText(customer.getLastName());
-				RootPanel.get().add(label2);
+			public void onSuccess(Customer[] customers) {
+
+				// CellTable<Customer> table = new CellTable<Customer>();
+				// TextColumn<Customer> nameColumn = new TextColumn<Customer>()
+				// {
+				// @Override
+				// public String getValue(Customer customer) {
+				// return customer.getFirstName();
+				// }
+				// };
+				// table.addColumn(nameColumn, "Name");
+				// ListDataProvider<Customer> dataProvider = new
+				// ListDataProvider<Customer>();
+				// dataProvider.addDataDisplay(table);
+				//
+				// dataProvider.setList(customers);
+				//
+				// RootPanel.get().add(table);
+				//
+				// Label label3 = new Label();
+				// label3.setText(Integer.toString(customers.size()));
+				//
+				// RootPanel.get().add(label3);
+
+				FlexTable table = new FlexTable();
+
+				table.setText(0, 0, customers[0].getFirstName());
+				table.setText(0, 1, customers[0].getLastName());
+
+				table.setText(1, 0, customers[1].getFirstName());
+				table.setText(1, 1, customers[1].getLastName());
+
+				table.setText(2, 0, customers[2].getFirstName());
+				table.setText(2, 1, customers[2].getLastName());
+
+				table.setText(3, 0, customers[3].getFirstName());
+				table.setText(3, 1, customers[3].getLastName());
+
+				RootPanel.get().add(table);
+
 			}
 		});
 
