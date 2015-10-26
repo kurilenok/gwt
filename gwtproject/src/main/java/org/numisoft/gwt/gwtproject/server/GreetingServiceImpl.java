@@ -23,18 +23,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		customers[0] = tom;
 
 		Customer john = new Customer();
-		tom.setFirstName("john");
-		tom.setLastName("doe");
+		john.setFirstName("john");
+		john.setLastName("doe");
 		customers[1] = john;
 
 		Customer vasja = new Customer();
-		tom.setFirstName("vasja");
-		tom.setLastName("pupkin");
+		vasja.setFirstName("vasja");
+		vasja.setLastName("pupkin");
 		customers[2] = vasja;
 
 		Customer eduard = new Customer();
-		tom.setFirstName("eduard");
-		tom.setLastName("leikin");
+		eduard.setFirstName("eduard");
+		eduard.setLastName("leikin");
 		customers[3] = eduard;
 
 		return customers;

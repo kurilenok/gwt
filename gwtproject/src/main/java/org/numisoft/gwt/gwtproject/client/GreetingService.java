@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface GreetingService extends RemoteService {
 
 	/*
-	 * @typeArgs <org.numisoft.gwt.gwtproject.shared.Customer>
+	 * @typeArgs <org.numisoft.gwt.gwtproject.shared.Customer[]>
 	 */
 
 	Customer[] greetServer(String name) throws IllegalArgumentException;
