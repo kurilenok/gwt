@@ -66,10 +66,14 @@ public class Main implements EntryPoint {
 			public void onSuccess(List<Customer> customers) {
 				FlexTable table = new FlexTable();
 				int i = 0;
-				for (Customer c : customers) {
+				for (Customer customer : customers) {
+					table.setText(i, 0, Integer.toString(i + 1));
+					table.setText(i, 1, customer.getTitle());
+					table.setText(i, 2, customer.getFirstName());
+					table.setText(i, 3, customer.getLastName());
+					table.setText(i, 4, customer.getCustomerType());
+					table.setText(i, 5, customer.getModifiedWhen());
 					i++;
-					table.setText(i, 0, c.getFirstName());
-					table.setText(i, 1, c.getLastName());
 				}
 				RootPanel.get().add(table);
 			}

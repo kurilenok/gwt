@@ -4,16 +4,21 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Customer implements IsSerializable {
 
-	String firstName;
-	String lastName;
+	private String title;
+	private String firstName;
+	private String lastName;
+	private String customerType;
+	private String modifiedWhen;
 
 	public Customer() {
-
 	}
 
-	public Customer(String firstName, String lastName) {
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getFirstName() {
@@ -30,6 +35,22 @@ public class Customer implements IsSerializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(String customerType) {
+		this.customerType = customerType;
+	}
+
+	public String getModifiedWhen() {
+		return modifiedWhen;
+	}
+
+	public void setModifiedWhen(String string) {
+		this.modifiedWhen = string;
 	}
 
 }

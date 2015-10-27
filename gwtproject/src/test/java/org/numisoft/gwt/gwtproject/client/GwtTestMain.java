@@ -49,8 +49,7 @@ public class GwtTestMain extends GWTTestCase {
 	 */
 	public void testGreetingService() {
 		// Create the service that we will test.
-		GreetingServiceAsync greetingService = GWT
-				.create(GreetingService.class);
+		GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 		ServiceDefTarget target = (ServiceDefTarget) greetingService;
 		target.setServiceEntryPoint(GWT.getModuleBaseURL() + "Main/greet");
 
@@ -61,21 +60,18 @@ public class GwtTestMain extends GWTTestCase {
 		delayTestFinish(10000);
 
 		// Send a request to the server.
-		greetingService.greetServer(new CustomerRequest(),
-				new AsyncCallback<List<Customer>>() {
-					@Override
-					public void onFailure(Throwable caught) {
-						// The request resulted in an unexpected error.
-						fail("Request failure: " + caught.getMessage());
-					}
+		greetingService.greetServer(new CustomerRequest(), new AsyncCallback<List<Customer>>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				// The request resulted in an unexpected error.
+				fail("Request failure: " + caught.getMessage());
+			}
 
-					@Override
-					public void onSuccess(List<Customer> customers) {
+			@Override
+			public void onSuccess(List<Customer> customers) {
 
-						finishTest();
-					}
-
-				});
+				finishTest();
+			}
+		});
 	}
-
 }

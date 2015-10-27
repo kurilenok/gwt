@@ -4,29 +4,15 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class CustomerRequest implements IsSerializable {
 
-	// String firstNameMetaphone;
-	// String lastNameMetaphone;
-
 	private String firstName;
 	private String lastName;
 
 	public CustomerRequest() {
-
 	}
 
 	public CustomerRequest(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-
-		// Metaphone metaphone = new Metaphone();
-		//
-		// firstNameMetaphone = metaphone.encode(firstName);
-		// lastNameMetaphone = metaphone.encode(lastName);
-
-	}
-
-	public CustomerRequest(String firstName) {
-		this.firstName = firstName;
 	}
 
 	public String getFirstName() {

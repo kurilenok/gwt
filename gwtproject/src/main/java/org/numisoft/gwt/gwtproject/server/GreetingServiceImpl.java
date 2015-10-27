@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.language.Metaphone;
 import org.numisoft.gwt.gwtproject.client.GreetingService;
 import org.numisoft.gwt.gwtproject.shared.Customer;
 import org.numisoft.gwt.gwtproject.shared.CustomerRequest;
@@ -24,32 +25,37 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	public List<Customer> greetServer(CustomerRequest request) throws IllegalArgumentException {
 
 		List<Customer> customers = new ArrayList<Customer>();
+		Metaphone metaphone = new Metaphone();
 
 		try {
 			String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 			Connection connection = DriverManager.getConnection(url);
 
 			StringBuilder select = new StringBuilder();
-			select.append("SELECT * FROM customers WHERE first_name LIKE '%");
-			select.append(request.getFirstName());
-			select.append("%' AND last_name LIKE '%");
-			select.append(request.getLastName());
-			select.append("%';");
+			select.append("SELECT * FROM customers WHERE first_name_metaphone LIKE '%");
+			select.append(metaphone.encode(request.getFirstName()));
+			select.append("%' AND last_name_metaphone LIKE '%");
+			select.append(metaphone.encode(request.getLastName()));
+			select.append("%' ORDER BY modified_when DESC;");
 
 			PreparedStatement statement = connection.prepareStatement(select.toString());
 
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				Customer customer = new Customer(result.getString("first_name"),
-						result.getString("last_name"));
+				Customer customer = new Customer();
+				customer.setTitle(result.getString("title"));
+				customer.setFirstName(result.getString("first_name"));
+				customer.setLastName(result.getString("last_name"));
+				customer.setCustomerType(result.getString("customer_type"));
+				customer.setModifiedWhen(result.getString("modified_when").substring(0, 19));
 				customers.add(customer);
 			}
 
 			statement.close();
 			connection.close();
 
-		} catch (SQLException e) { // TODO Auto-generated catch block
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return customers;
