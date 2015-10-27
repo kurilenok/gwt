@@ -1,5 +1,7 @@
 package org.numisoft.gwt.gwtproject.client;
 
+import java.util.List;
+
 import org.numisoft.gwt.gwtproject.shared.Customer;
 import org.numisoft.gwt.gwtproject.shared.FieldVerifier;
 
@@ -59,7 +61,7 @@ public class GwtTestMain extends GWTTestCase {
 
 		// Send a request to the server.
 		greetingService.greetServer("GWT User",
-				new AsyncCallback<Customer[]>() {
+				new AsyncCallback<List<Customer>>() {
 					@Override
 					public void onFailure(Throwable caught) {
 						// The request resulted in an unexpected error.
@@ -67,7 +69,7 @@ public class GwtTestMain extends GWTTestCase {
 					}
 
 					@Override
-					public void onSuccess(Customer[] customers) {
+					public void onSuccess(List<Customer> customers) {
 
 						finishTest();
 					}

@@ -1,5 +1,7 @@
 package org.numisoft.gwt.gwtproject.client;
 
+import java.util.List;
+
 import org.numisoft.gwt.gwtproject.shared.Customer;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -9,8 +11,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface GreetingService extends RemoteService {
 
 	/*
-	 * @typeArgs <org.numisoft.gwt.gwtproject.shared.Customer[]>
+	 * @typeArgs <java.util.List<org.numisoft.gwt.gwtproject.shared.Customer>>
 	 */
 
-	Customer[] greetServer(String name) throws IllegalArgumentException;
+	List<Customer> greetServer(String name) throws IllegalArgumentException;
 }
