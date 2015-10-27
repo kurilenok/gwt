@@ -1,21 +1,48 @@
 package org.numisoft.gwt.gwtproject.shared;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-import org.apache.commons.codec.language.Metaphone;
+public class CustomerRequest implements IsSerializable {
 
-public class CustomerRequest implements Serializable {
+	// String firstNameMetaphone;
+	// String lastNameMetaphone;
 
-	String firstNameMetaphone;
-	String lastNameMetaphone;
+	private String firstName;
+	private String lastName;
+
+	public CustomerRequest() {
+
+	}
 
 	public CustomerRequest(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 
-		Metaphone metaphone = new Metaphone();
+		// Metaphone metaphone = new Metaphone();
+		//
+		// firstNameMetaphone = metaphone.encode(firstName);
+		// lastNameMetaphone = metaphone.encode(lastName);
 
-		firstNameMetaphone = metaphone.encode(firstName);
-		lastNameMetaphone = metaphone.encode(lastName);
+	}
 
+	public CustomerRequest(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }

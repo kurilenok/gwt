@@ -3,6 +3,7 @@ package org.numisoft.gwt.gwtproject.client;
 import java.util.List;
 
 import org.numisoft.gwt.gwtproject.shared.Customer;
+import org.numisoft.gwt.gwtproject.shared.CustomerRequest;
 import org.numisoft.gwt.gwtproject.shared.FieldVerifier;
 
 import com.google.gwt.core.client.GWT;
@@ -60,7 +61,7 @@ public class GwtTestMain extends GWTTestCase {
 		delayTestFinish(10000);
 
 		// Send a request to the server.
-		greetingService.greetServer("GWT User",
+		greetingService.greetServer(new CustomerRequest(),
 				new AsyncCallback<List<Customer>>() {
 					@Override
 					public void onFailure(Throwable caught) {
