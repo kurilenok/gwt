@@ -39,16 +39,30 @@ public class Main implements EntryPoint {
 		Button button1 = new Button("Enter");
 
 		button1.addClickHandler(new ClickHandler() {
+
 			@Override
 			public void onClick(ClickEvent arg0) {
+
+				if (!verifyInput(tbFirstName.getValue() + tbLastName.getValue())) {
+					label1.setText("Wrong input");
+					tbFirstName.setText("");
+					tbLastName.setText("");
+					return;
+				}
+
 				request = new CustomerRequest(tbFirstName.getValue(), tbLastName.getValue());
 				label1.setText(request.getFirstName() + " " + request.getLastName());
 				createTable(request);
 			}
+
 		});
 
 		RootPanel.get().add(button1);
 
+	}
+
+	public boolean verifyInput(String input) {
+		return input.matches("[a-zA-Z]+");
 	}
 
 	public void createTable(CustomerRequest request) {

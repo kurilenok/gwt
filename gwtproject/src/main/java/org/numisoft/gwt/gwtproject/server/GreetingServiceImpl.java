@@ -31,8 +31,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 			Connection connection = DriverManager.getConnection(url);
 
+			// SELECT * FROM customers INNER JOIN customer_types
+			// ON customers.customer_type_id = customer_types.customer_type_id
+			// WHERE first_name LIKE '% %' AND last_name LIKE '% %'
+			// ORDER BY modified_when DESC;
+
 			StringBuilder select = new StringBuilder();
-			select.append("SELECT * FROM customers WHERE first_name_metaphone LIKE '%");
+			select.append("SELECT * FROM customers INNER JOIN customer_types ");
+			select.append("ON customers.customer_type_id = customer_types.customer_type_id ");
+			select.append("WHERE first_name_metaphone LIKE '%");
 			select.append(metaphone.encode(request.getFirstName()));
 			select.append("%' AND last_name_metaphone LIKE '%");
 			select.append(metaphone.encode(request.getLastName()));
@@ -47,7 +54,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 				customer.setTitle(result.getString("title"));
 				customer.setFirstName(result.getString("first_name"));
 				customer.setLastName(result.getString("last_name"));
-				customer.setCustomerType(result.getString("customer_type"));
+				customer.setCustomerType(result.getString("customer_type_caption"));
 				customer.setModifiedWhen(result.getString("modified_when").substring(0, 19));
 				customers.add(customer);
 			}
