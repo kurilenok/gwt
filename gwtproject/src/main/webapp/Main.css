@@ -10,6 +10,63 @@ h1 {
   text-align: center;
 }
 
+#searchBar {
+	background-color: #148aca;
+	padding: 8px;
+}
+
+#tableDiv {
+	background-color: #f0f1ed; 
+	padding: 8px;
+}
+
+#console {
+	color: #6a7073;
+	font-size: x-small; 
+	padding-top: 4px;
+}
+
+#pageBar {
+	background-color: #f0f1ed; 
+	padding-bottom: 8px;
+}
+
+.resultTable {
+	border: thin solid #111;
+}
+
+.resultTableHeader {
+
+	border: 20px;
+	background-color: #148aca; 
+	font-weight: bold;
+}
+
+
+.column0 {
+	width: 40px;
+}
+
+.column1 {
+	width: 40px;
+}
+
+.column2 {
+	width: 100px;
+}
+
+.column3 {
+	width: 100px;
+}
+
+.column4 {
+	width: 150px;
+}
+
+.column5 {
+	width: 140px;
+}
+
 .sendButton {
   display: block;
   font-size: 16pt;
