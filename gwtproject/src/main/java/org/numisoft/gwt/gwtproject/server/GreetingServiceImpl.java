@@ -43,7 +43,14 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			select.append(metaphone.encode(request.getFirstName()));
 			select.append("%' AND last_name_metaphone LIKE '%");
 			select.append(metaphone.encode(request.getLastName()));
-			select.append("%' ORDER BY modified_when DESC;");
+			select.append("%' ORDER BY modified_when DESC");
+
+			if (request.getFirstName().equalsIgnoreCase("")
+					&& request.getLastName().equalsIgnoreCase("")) {
+				select.append(" LIMIT 10;");
+			} else {
+				select.append(";");
+			}
 
 			PreparedStatement statement = connection.prepareStatement(select.toString());
 
@@ -51,6 +58,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 
 			while (result.next()) {
 				Customer customer = new Customer();
+				customer.setCustomerId(result.getInt("customer_id"));
 				customer.setTitle(result.getString("title"));
 				customer.setFirstName(result.getString("first_name"));
 				customer.setLastName(result.getString("last_name"));
@@ -66,6 +74,51 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			e.printStackTrace();
 		}
 		return customers;
+	}
+
+	@Override
+	public String modifyCustomer(Customer customer) throws IllegalArgumentException {
+
+		String modifiedWhen = "";
+		Metaphone metaphone = new Metaphone();
+
+		try {
+			String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+			Connection connection = DriverManager.getConnection(url);
+
+			StringBuilder update = new StringBuilder();
+			update.append("UPDATE customers SET first_name = '" + customer.getFirstName());
+			update.append("', first_name_metaphone = '" + metaphone.encode(customer.getFirstName()));
+			update.append("', last_name = '" + customer.getLastName());
+			update.append("', last_name_metaphone = '" + metaphone.encode(customer.getLastName()));
+			update.append("', title ='" + customer.getTitle());
+			update.append("', modified_when = DEFAULT ");
+			update.append("WHERE customer_id = " + customer.getCustomerId() + ";");
+
+			PreparedStatement update_statement = connection.prepareStatement(update.toString());
+			update_statement.execute();
+
+			/* Get new timestamp for updated customer */
+			StringBuilder select = new StringBuilder();
+			select.append("SELECT * FROM customers ");
+			select.append("WHERE customer_id = " + customer.getCustomerId() + ";");
+
+			PreparedStatement select_statement = connection.prepareStatement(select.toString());
+			ResultSet result = select_statement.executeQuery();
+
+			while (result.next()) {
+				modifiedWhen = result.getString("modified_when");
+			}
+
+			update_statement.close();
+			select_statement.close();
+			connection.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return modifiedWhen;
 	}
 
 }

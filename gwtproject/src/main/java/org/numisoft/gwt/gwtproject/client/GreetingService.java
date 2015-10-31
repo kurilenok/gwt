@@ -17,6 +17,7 @@ public interface GreetingService extends RemoteService {
 	 * @typeArgs <org.numisoft.gwt.gwtproject.shared.CustomerRequest>
 	 */
 
-	List<Customer> greetServer(CustomerRequest request)
-			throws IllegalArgumentException;
+	List<Customer> greetServer(CustomerRequest request) throws IllegalArgumentException;
+
+	String modifyCustomer(Customer customer) throws IllegalArgumentException;
 }

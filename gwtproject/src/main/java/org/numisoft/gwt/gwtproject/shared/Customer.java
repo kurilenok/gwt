@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Customer implements IsSerializable {
 
+	private int customerId;
 	private String title;
 	private String firstName;
 	private String lastName;
@@ -51,6 +52,14 @@ public class Customer implements IsSerializable {
 
 	public void setModifiedWhen(String string) {
 		this.modifiedWhen = string;
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 
 }
