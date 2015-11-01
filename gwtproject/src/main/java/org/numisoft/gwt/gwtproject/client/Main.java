@@ -29,8 +29,8 @@ public class Main implements EntryPoint {
 	int currentPage;
 	final String[] TITLES = { "Mr.", "Ms.", "Dr." };
 	final String[] TYPES = { "Residential", "Small/Medium Business", "Enterprise" };
-	Customer editCustomer;
-	int rowEdit, rowConfirm;
+	Customer editCustomer, deleteCustomer;
+	int rowEdit, rowDelete, rowConfirm, rowConfirmDelete;
 
 	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
@@ -47,7 +47,6 @@ public class Main implements EntryPoint {
 		RootPanel.get("searchBar").add(tbSearchLastName);
 
 		Button bSearch = new Button("Enter");
-		// bSearch.setStyleName("bSearch");
 		bSearch.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent arg0) {
@@ -235,10 +234,44 @@ public class Main implements EntryPoint {
 			bDelete.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
+
 					int cellIndex = resultTable.getCellForEvent(event).getCellIndex();
-					int rowIndex = resultTable.getCellForEvent(event).getRowIndex();
-					label1.setText("cellIndex: " + cellIndex + ", rowIndex: " + rowIndex);
+					rowDelete = resultTable.getCellForEvent(event).getRowIndex();
+
+					deleteCustomer = customers.get((currentPage - 1) * PAGE_MODULE + rowDelete - 1);
+
+					label1.setText("cellIndex: " + cellIndex + ", rowIndex: " + rowDelete
+							+ ", customer ID: " + deleteCustomer.getCustomerId());
+
+					Button bConfirmDelete = new Button("Confirm");
+
+					resultTable.setWidget(rowDelete, 7, bConfirmDelete);
+					bConfirmDelete.addClickHandler(new ClickHandler() {
+
+						@Override
+						public void onClick(ClickEvent event) {
+
+							rowConfirmDelete = resultTable.getCellForEvent(event).getRowIndex();
+							deleteCustomer = customers.get((currentPage - 1) * PAGE_MODULE
+									+ rowConfirmDelete - 1);
+
+							greetingService.deleteCustomer(deleteCustomer,
+									new AsyncCallback<Void>() {
+
+										@Override
+										public void onFailure(Throwable caught) {
+											label1.setText(caught.getMessage());
+										}
+
+										@Override
+										public void onSuccess(Void result) {
+											resultTable.setText(rowConfirmDelete, 7, "Deleted");
+										}
+									});
+						}
+					});
 				}
+
 			});
 			resultTable.setWidget(j, 7, bDelete);
 		}

@@ -15,5 +15,7 @@ public interface GreetingService extends RemoteService {
 
 	String modifyCustomer(Customer customer) throws IllegalArgumentException;
 
+	void deleteCustomer(Customer customer) throws IllegalArgumentException;
+
 	boolean checkTables(String tableName) throws IllegalArgumentException;
 }

@@ -157,4 +157,21 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return false;
 	}
 
+	@Override
+	public void deleteCustomer(Customer customer) throws IllegalArgumentException {
+
+		try {
+			Connection connection = DriverManager.getConnection(url);
+
+			StringBuilder delete = new StringBuilder();
+			delete.append("DELETE FROM customers WHERE customer_id = " + customer.getCustomerId()
+					+ ";");
+
+			PreparedStatement update_statement = connection.prepareStatement(delete.toString());
+			update_statement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 }
