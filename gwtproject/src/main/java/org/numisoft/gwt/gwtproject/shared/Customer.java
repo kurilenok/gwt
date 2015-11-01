@@ -8,6 +8,7 @@ public class Customer implements IsSerializable {
 	private String title;
 	private String firstName;
 	private String lastName;
+	private int customerTypeId;
 	private String customerType;
 	private String modifiedWhen;
 
@@ -60,6 +61,14 @@ public class Customer implements IsSerializable {
 
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
+	}
+
+	public int getCustomerTypeId() {
+		return customerTypeId;
+	}
+
+	public void setCustomerTypeId(int customerTypeId) {
+		this.customerTypeId = customerTypeId;
 	}
 
 }

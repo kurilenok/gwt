@@ -97,6 +97,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			update.append("', last_name = '" + customer.getLastName());
 			update.append("', last_name_metaphone = '" + metaphone.encode(customer.getLastName()));
 			update.append("', title ='" + customer.getTitle());
+			update.append("', customer_type_id ='" + customer.getCustomerTypeId());
 			update.append("', modified_when = DEFAULT ");
 			update.append("WHERE customer_id = " + customer.getCustomerId() + ";");
 
@@ -142,14 +143,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 
 			if (tables.next()) {
 				return true;
+			} else {
+				DBCreator.createTableCustomerTypes();
+				DBCreator.populateTableCustomerTypes();
+				DBCreator.createTableCustomers();
+				DBCreator.populateTableCustomers();
+				return true;
 			}
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return false;
-
 	}
 
 }

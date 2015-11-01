@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.numisoft.gwt.gwtproject.shared.Customer;
 import org.numisoft.gwt.gwtproject.shared.CustomerRequest;
+import org.numisoft.gwt.gwtproject.shared.Verifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -23,7 +24,7 @@ public class Main implements EntryPoint {
 	FlexTable resultTable;
 	List<Customer> customers;
 	Label label1;
-	final int PAGE_MODULE = 5;
+	final int PAGE_MODULE = 10;
 	int pages;
 	int currentPage;
 	final String[] TITLES = { "Mr.", "Ms.", "Dr." };
@@ -39,38 +40,37 @@ public class Main implements EntryPoint {
 		label1 = new Label();
 		RootPanel.get("console").add(label1);
 
-		final TextBox tbFirstName = new TextBox();
-		RootPanel.get("searchBar").add(tbFirstName);
+		final TextBox tbSearchFirstName = new TextBox();
+		RootPanel.get("searchBar").add(tbSearchFirstName);
 
-		final TextBox tbLastName = new TextBox();
-		RootPanel.get("searchBar").add(tbLastName);
+		final TextBox tbSearchLastName = new TextBox();
+		RootPanel.get("searchBar").add(tbSearchLastName);
 
 		Button bSearch = new Button("Enter");
 		// bSearch.setStyleName("bSearch");
 		bSearch.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent arg0) {
-				if (!verifyInput(tbFirstName.getValue() + tbLastName.getValue())) {
-					label1.setText("Wrong input");
-					tbFirstName.setText("");
-					tbLastName.setText("");
+				if (!Verifier.isEnglish(tbSearchFirstName.getValue() + tbSearchLastName.getValue())) {
+					label1.setText("Wrong input, English please!");
 					return;
 				}
-				request = new CustomerRequest(tbFirstName.getValue(), tbLastName.getValue());
+				request = new CustomerRequest(tbSearchFirstName.getValue(), tbSearchLastName
+						.getValue());
 				label1.setText(request.getFirstName() + " " + request.getLastName());
 				getResult(request);
 			}
 		});
 		RootPanel.get("searchBar").add(bSearch);
 
-		// getResult(new CustomerRequest("", ""));
+		getResult(new CustomerRequest("", ""));
 
 		greetingService.checkTables("customers", new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {
-				label1.setText("DB detected");
-
+				label1.setText(GWT.getHostPageBaseURL() + " " + GWT.getModuleBaseURL() + " "
+						+ GWT.getModuleName());
 			}
 
 			@Override
@@ -81,6 +81,10 @@ public class Main implements EntryPoint {
 		});
 
 	}
+
+	/**
+	 * This method sends request to server and returns list of customers
+	 * */
 
 	public void getResult(CustomerRequest request) {
 		greetingService.greetServer(request, new AsyncCallback<List<Customer>>() {
@@ -114,12 +118,10 @@ public class Main implements EntryPoint {
 		});
 	}
 
-	public boolean verifyInput(String input) {
-		if (input.matches("[a-zA-Z]+") || input == "") {
-			return true;
-		}
-		return false;
-	}
+	/**
+	 * This method updates main table and shows page according to page number
+	 * provided
+	 * */
 
 	public void updateResultTable(int page) {
 
@@ -177,7 +179,7 @@ public class Main implements EntryPoint {
 					tbLastName.setText(editCustomer.getLastName());
 					resultTable.setWidget(rowEdit, 3, tbLastName);
 
-					ListBox lbCustomerType = new ListBox();
+					final ListBox lbCustomerType = new ListBox();
 					for (int i = 0; i < TYPES.length; i++) {
 						lbCustomerType.addItem(TYPES[i]);
 						if (editCustomer.getCustomerType().equalsIgnoreCase(TYPES[i])) {
@@ -194,6 +196,10 @@ public class Main implements EntryPoint {
 
 						@Override
 						public void onClick(ClickEvent event) {
+							if (!Verifier.isEnglish(tbFirstName.getValue() + tbLastName.getValue())) {
+								label1.setText("Wrong input, English please!");
+								return;
+							}
 
 							rowConfirm = resultTable.getCellForEvent(event).getRowIndex();
 							editCustomer = customers.get((currentPage - 1) * PAGE_MODULE
@@ -202,6 +208,7 @@ public class Main implements EntryPoint {
 							editCustomer.setTitle(lbTitle.getSelectedItemText());
 							editCustomer.setFirstName(tbFirstName.getValue());
 							editCustomer.setLastName(tbLastName.getValue());
+							editCustomer.setCustomerTypeId(lbCustomerType.getSelectedIndex() + 1);
 
 							greetingService.modifyCustomer(editCustomer,
 									new AsyncCallback<String>() {
@@ -220,7 +227,6 @@ public class Main implements EntryPoint {
 									});
 						}
 					});
-
 				}
 			});
 			resultTable.setWidget(j, 6, bEdit);
