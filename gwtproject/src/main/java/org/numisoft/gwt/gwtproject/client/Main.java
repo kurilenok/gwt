@@ -63,7 +63,22 @@ public class Main implements EntryPoint {
 		});
 		RootPanel.get("searchBar").add(bSearch);
 
-		getResult(new CustomerRequest("", ""));
+		// getResult(new CustomerRequest("", ""));
+
+		greetingService.checkTables("customers", new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				label1.setText("DB detected");
+
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				label1.setText(caught.getMessage());
+
+			}
+		});
 
 	}
 

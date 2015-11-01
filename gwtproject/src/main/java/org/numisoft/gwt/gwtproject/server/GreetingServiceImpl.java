@@ -1,6 +1,7 @@
 package org.numisoft.gwt.gwtproject.server;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
+	String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+
+	/**
+	 * This method gets returns list of customers upon request from client side
+	 * 
+	 * */
+
 	@Override
 	public List<Customer> greetServer(CustomerRequest request) throws IllegalArgumentException {
 
@@ -28,13 +36,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		Metaphone metaphone = new Metaphone();
 
 		try {
-			String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 			Connection connection = DriverManager.getConnection(url);
-
-			// SELECT * FROM customers INNER JOIN customer_types
-			// ON customers.customer_type_id = customer_types.customer_type_id
-			// WHERE first_name LIKE '% %' AND last_name LIKE '% %'
-			// ORDER BY modified_when DESC;
 
 			StringBuilder select = new StringBuilder();
 			select.append("SELECT * FROM customers INNER JOIN customer_types ");
@@ -76,6 +78,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		return customers;
 	}
 
+	/**
+	 * This method modifies customer data in DB upon request from client side
+	 * */
+
 	@Override
 	public String modifyCustomer(Customer customer) throws IllegalArgumentException {
 
@@ -83,7 +89,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		Metaphone metaphone = new Metaphone();
 
 		try {
-			String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 			Connection connection = DriverManager.getConnection(url);
 
 			StringBuilder update = new StringBuilder();
@@ -119,6 +124,32 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		}
 
 		return modifiedWhen;
+	}
+
+	/**
+	 * This method checks if DB table is available. If DB table is not
+	 * available, it is created via xml parsing.
+	 * */
+
+	@Override
+	public boolean checkTables(String tableName) throws IllegalArgumentException {
+
+		try {
+			Connection connection = DriverManager.getConnection(url);
+			DatabaseMetaData dbm = connection.getMetaData();
+			// check if "customers" table is there
+			ResultSet tables = dbm.getTables(null, null, tableName, null);
+
+			if (tables.next()) {
+				return true;
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return false;
+
 	}
 
 }

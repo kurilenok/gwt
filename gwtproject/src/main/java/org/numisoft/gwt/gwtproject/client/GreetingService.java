@@ -11,13 +11,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-	/*
-	 * @typeArgs <java.util.List<org.numisoft.gwt.gwtproject.shared.Customer>>
-	 * 
-	 * @typeArgs <org.numisoft.gwt.gwtproject.shared.CustomerRequest>
-	 */
-
 	List<Customer> greetServer(CustomerRequest request) throws IllegalArgumentException;
 
 	String modifyCustomer(Customer customer) throws IllegalArgumentException;
+
+	boolean checkTables(String tableName) throws IllegalArgumentException;
 }

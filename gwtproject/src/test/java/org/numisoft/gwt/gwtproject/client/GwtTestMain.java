@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.numisoft.gwt.gwtproject.shared.Customer;
 import org.numisoft.gwt.gwtproject.shared.CustomerRequest;
-import org.numisoft.gwt.gwtproject.shared.FieldVerifier;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
@@ -29,18 +28,6 @@ public class GwtTestMain extends GWTTestCase {
 	@Override
 	public String getModuleName() {
 		return "org.numisoft.gwt.gwtproject.MainJUnit";
-	}
-
-	/**
-	 * Tests the FieldVerifier.
-	 */
-	public void testFieldVerifier() {
-		assertFalse(FieldVerifier.isValidName(null));
-		assertFalse(FieldVerifier.isValidName(""));
-		assertFalse(FieldVerifier.isValidName("a"));
-		assertFalse(FieldVerifier.isValidName("ab"));
-		assertFalse(FieldVerifier.isValidName("abc"));
-		assertTrue(FieldVerifier.isValidName("abcd"));
 	}
 
 	/**
