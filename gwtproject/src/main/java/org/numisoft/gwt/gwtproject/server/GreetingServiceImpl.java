@@ -128,8 +128,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	}
 
 	/**
-	 * This method checks if DB table is available. If DB table is not
-	 * available, it is created via xml parsing.
+	 * This method checks if DB tables are available. If DB tables are not
+	 * available, missing tables are created.
 	 * */
 
 	@Override

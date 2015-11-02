@@ -22,6 +22,22 @@ public abstract class DBCreator {
 
 	private final static String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 
+	private static final String DATA = "Tom Brady, Jimmy Garoppolo, LeGarrette Blount,"
+			+ "Brandon Bolden, Dion Lewis, James White, Danny Amendola, Aaron Dobson,"
+			+ "Julian Edelman, Brandon LaFell, Keshawn Martin, Matthew Slater, Scott Chandler,"
+			+ "Rob Gronkowski, Michael Williams, David Andrews, Marcus Cannon,Cameron Fleming,"
+			+ "Tre Jackson, Josh Kline, Shaq Mason, Sebastian Vollmer, Ryan Wendell, "
+			+ "Alan Branch, Malcom Brown, Dominique Easley, Trey Flowers, Geneo Grissom,"
+			+ "Akiem Hicks, Rufus Johnson, Chandler Jones, Rob Ninkovich, Jabaal Sheard,"
+			+ "Sealver Siliga, Jon Bostic, Jamie Collins, Jonathan Freeny, Donta Hightower,"
+			+ "Jerod Mayo, Malcolm Butler, Justin Coleman, Patrick Chung, Nate Ebner,"
+			+ "Duron Harmon, Brandon King, Devin McCourty, Rashaan Melvin, Jordan Richards,"
+			+ "Logan Ryan, Tavon Wilson Ryan Allen, Joe Cardona, Stephen Gostkowski,"
+			+ "Tarell Brown, James Develin, Dane Fletcher, Tyler Gaffney, Brandon Gibson,"
+			+ "Chris Jones, Darryl Roberts, Nate Solder, Bryan Stork, Brian Tyms, Chris Barker,"
+			+ "Blaine Clausell, Asante Cleveland, Brandon Dixon, Darius Fleming, Chris Harper, "
+			+ "Austin Hill, Joey Iosefa, Eric Martin";
+
 	public static void createTableCustomerTypes() {
 
 		try {
@@ -53,15 +69,13 @@ public abstract class DBCreator {
 			StringBuilder create = new StringBuilder();
 			create.append("CREATE TABLE customers (");
 			create.append("customer_id serial NOT NULL, ");
-			create.append("title character varying(5), ");
+			create.append("title character varying(5) DEFAULT 'Mr.', ");
 			create.append("first_name character varying(50), ");
 			create.append("first_name_metaphone character varying(50), ");
 			create.append("last_name character varying(50), ");
 			create.append("last_name_metaphone character varying(50), ");
 			create.append("modified_when timestamp without time zone DEFAULT now(), ");
-			create.append("customer_type_id integer, ");
-			// create.append("CONSTRAINT customers_pkey PRIMARY KEY (customer_id));");
-
+			create.append("customer_type_id integer DEFAULT 1, ");
 			create.append("CONSTRAINT customers_pkey PRIMARY KEY (customer_id), ");
 			create.append("CONSTRAINT customers_customer_type_id_fkey FOREIGN KEY (customer_type_id) ");
 			create.append("REFERENCES customer_types (customer_type_id) MATCH SIMPLE ");
@@ -78,15 +92,51 @@ public abstract class DBCreator {
 
 	public static void populateTableCustomers() {
 
+		// List<Customer> customers = new ArrayList<Customer>();
+
+		String[] input = DATA.split(",");
+
+		for (int i = 0; i < input.length; i++) {
+			input[i] = input[i].trim();
+			String[] entry = input[i].split("\\s+");
+			Customer customer = new Customer();
+
+			customer.setFirstName(entry[0].trim());
+			customer.setLastName(entry[1].trim());
+
+			// customers.add(customer);
+
+			addCustomer(customer);
+		}
+
+	}
+
+	public static void populateTableCustomersFromXML() {
+
 		List<Customer> customers = new ArrayList<Customer>();
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-		File f = new File("/home/kukolka/NetCracker/data.xml");
+		File file = new File("/home/kukolka/NetCracker/data.xml");
+
+		// File file = new File(GWT.getModuleBaseForStaticFiles() +
+		// "xml/data.xml");
+		// if (file.exists()) {
+		// file = new File(GWT.getModuleBaseForStaticFiles() + "data.xml");
+		// }
+		// if (file.exists()) {
+		// file = new File(GWT.getModuleBaseURL() + "xml/data.xml");
+		// }
+		// if (file.exists()) {
+		// file = new File("/WEB-INF/xml/data.xml");
+		// }
+		// if (file.exists()) {
+		// file = new File("./WEB-INF/xml/data.xml");
+		// }
 
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(f);
+			Document document = builder.parse(file);
 			NodeList nodeList = document.getDocumentElement().getChildNodes();
 
 			for (int i = 0; i < nodeList.getLength(); i++) {
@@ -125,14 +175,12 @@ public abstract class DBCreator {
 		try {
 			Connection connection = DriverManager.getConnection(url);
 			StringBuilder add = new StringBuilder();
-			add.append("INSERT INTO customers (title, first_name, first_name_metaphone, ");
-			add.append("last_name, last_name_metaphone, customer_type_id) ");
-			add.append("VALUES ('" + customer.getTitle() + "' ,'");
+			add.append("INSERT INTO customers (first_name, first_name_metaphone, ");
+			add.append("last_name, last_name_metaphone) VALUES ('");
 			add.append(customer.getFirstName() + "', '");
 			add.append(metaphone.encode(customer.getFirstName()) + "', '");
 			add.append(customer.getLastName() + "', '");
-			add.append(metaphone.encode(customer.getLastName()) + "', '");
-			add.append(customer.getCustomerTypeId() + "');");
+			add.append(metaphone.encode(customer.getLastName()) + "');");
 
 			PreparedStatement update_statement = connection.prepareStatement(add.toString());
 			update_statement.execute();

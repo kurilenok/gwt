@@ -5,8 +5,8 @@
 h1 {
   font-size: 2em;
   font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
+  color: #6a7073;
+  margin: 40px 0px 50px;
   text-align: center;
 }
 
@@ -35,9 +35,8 @@ h1 {
 }
 
 .resultTableHeader {
-
 	border: 20px;
-	background-color: #148aca; 
+	background-color: #ff7a1e; 
 	font-weight: bold;
 }
 
