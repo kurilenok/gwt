@@ -47,7 +47,7 @@ public class GwtTestMain extends GWTTestCase {
 		delayTestFinish(10000);
 
 		// Send a request to the server.
-		greetingService.greetServer(new CustomerRequest(), new AsyncCallback<List<Customer>>() {
+		greetingService.searchCustomers(new CustomerRequest(), new AsyncCallback<List<Customer>>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// The request resulted in an unexpected error.

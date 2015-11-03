@@ -11,11 +11,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-	List<Customer> greetServer(CustomerRequest request) throws IllegalArgumentException;
+	List<Customer> searchCustomers(CustomerRequest request) throws IllegalArgumentException;
 
 	String modifyCustomer(Customer customer) throws IllegalArgumentException;
 
 	void deleteCustomer(Customer customer) throws IllegalArgumentException;
 
-	boolean checkTables(String tableName) throws IllegalArgumentException;
+	void checkTables(String tableName) throws IllegalArgumentException;
 }

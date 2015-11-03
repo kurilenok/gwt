@@ -18,10 +18,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * This class is a helper class to deal with DB queries.
+ * 
+ * */
 public abstract class DBCreator {
 
 	private final static String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 
+	/* Data to initialize DB table */
 	private static final String DATA = "Tom Brady, Jimmy Garoppolo, LeGarrette Blount,"
 			+ "Brandon Bolden, Dion Lewis, James White, Danny Amendola, Aaron Dobson,"
 			+ "Julian Edelman, Brandon LaFell, Keshawn Martin, Matthew Slater, Scott Chandler,"
@@ -39,7 +44,6 @@ public abstract class DBCreator {
 			+ "Austin Hill, Joey Iosefa, Eric Martin";
 
 	public static void createTableCustomerTypes() {
-
 		try {
 			Connection connection = DriverManager.getConnection(url);
 			StringBuilder create = new StringBuilder();
@@ -50,7 +54,6 @@ public abstract class DBCreator {
 
 			PreparedStatement update_statement = connection.prepareStatement(create.toString());
 			update_statement.execute();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -62,8 +65,22 @@ public abstract class DBCreator {
 		addCustomerType("Enterprise");
 	}
 
-	public static void createTableCustomers() {
+	public static void addCustomerType(String customerType) {
+		try {
+			Connection connection = DriverManager.getConnection(url);
+			StringBuilder add = new StringBuilder();
+			add.append("INSERT INTO customer_types (customer_type_caption) ");
+			add.append("VALUES ('" + customerType + "');");
 
+			PreparedStatement update_statement = connection.prepareStatement(add.toString());
+			update_statement.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void createTableCustomers() {
 		try {
 			Connection connection = DriverManager.getConnection(url);
 			StringBuilder create = new StringBuilder();
@@ -87,15 +104,10 @@ public abstract class DBCreator {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void populateTableCustomers() {
-
-		// List<Customer> customers = new ArrayList<Customer>();
-
 		String[] input = DATA.split(",");
-
 		for (int i = 0; i < input.length; i++) {
 			input[i] = input[i].trim();
 			String[] entry = input[i].split("\\s+");
@@ -104,19 +116,35 @@ public abstract class DBCreator {
 			customer.setFirstName(entry[0].trim());
 			customer.setLastName(entry[1].trim());
 
-			// customers.add(customer);
-
 			addCustomer(customer);
+		}
+	}
+
+	public static void addCustomer(Customer customer) {
+		Metaphone metaphone = new Metaphone();
+		try {
+			Connection connection = DriverManager.getConnection(url);
+			StringBuilder add = new StringBuilder();
+			add.append("INSERT INTO customers (first_name, first_name_metaphone, ");
+			add.append("last_name, last_name_metaphone) VALUES ('");
+			add.append(customer.getFirstName() + "', '");
+			add.append(metaphone.encode(customer.getFirstName()) + "', '");
+			add.append(customer.getLastName() + "', '");
+			add.append(metaphone.encode(customer.getLastName()) + "');");
+
+			PreparedStatement update_statement = connection.prepareStatement(add.toString());
+			update_statement.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 	}
 
+	/* Not used (( */
 	public static void populateTableCustomersFromXML() {
-
 		List<Customer> customers = new ArrayList<Customer>();
-
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
 		File file = new File("/home/kukolka/NetCracker/data.xml");
 
 		// File file = new File(GWT.getModuleBaseForStaticFiles() +
@@ -158,54 +186,9 @@ public abstract class DBCreator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		for (Customer customer : customers) {
-
 			System.out.println(customer.getTitle() + " " + customer.getFirstName() + " "
 					+ customer.getLastName() + " " + customer.getCustomerTypeId());
-
 		}
-
 	}
-
-	public static void addCustomer(Customer customer) {
-
-		Metaphone metaphone = new Metaphone();
-
-		try {
-			Connection connection = DriverManager.getConnection(url);
-			StringBuilder add = new StringBuilder();
-			add.append("INSERT INTO customers (first_name, first_name_metaphone, ");
-			add.append("last_name, last_name_metaphone) VALUES ('");
-			add.append(customer.getFirstName() + "', '");
-			add.append(metaphone.encode(customer.getFirstName()) + "', '");
-			add.append(customer.getLastName() + "', '");
-			add.append(metaphone.encode(customer.getLastName()) + "');");
-
-			PreparedStatement update_statement = connection.prepareStatement(add.toString());
-			update_statement.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public static void addCustomerType(String customerType) {
-
-		try {
-			Connection connection = DriverManager.getConnection(url);
-			StringBuilder add = new StringBuilder();
-			add.append("INSERT INTO customer_types (customer_type_caption) ");
-			add.append("VALUES ('" + customerType + "');");
-
-			PreparedStatement update_statement = connection.prepareStatement(add.toString());
-			update_statement.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 }
