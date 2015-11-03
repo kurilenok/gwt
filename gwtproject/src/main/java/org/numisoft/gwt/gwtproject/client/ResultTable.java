@@ -10,7 +10,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 /**
@@ -28,7 +27,7 @@ public class ResultTable extends FlexTable {
 
 	public ResultTable(int page) {
 
-		RootPanel.get("tableDiv").clear();
+		// RootPanel.get("tableDiv").clear();
 
 		/* Set up table header */
 		setText(0, 0, "#");
@@ -206,8 +205,6 @@ public class ResultTable extends FlexTable {
 		getColumnFormatter().addStyleName(7, "column7");
 		getRowFormatter().addStyleName(0, "resultTableHeader");
 
-		RootPanel.get("tableDiv").add(this);
-
+		// RootPanel.get("tableDiv").add(this);
 	}
-
 }
