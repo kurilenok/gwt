@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -131,8 +130,10 @@ public class Main implements EntryPoint {
 
 				/* Show first page */
 				currentPage = 1;
-				FlexTable resultTable = new ResultTable(currentPage);
-				FlexTable pageBar = new PageBar(pages);
+				RootPanel.get("tableDiv").clear();
+				RootPanel.get("tableDiv").add(new ResultTable(currentPage));
+				RootPanel.get("pageBar").clear();
+				RootPanel.get("pageBar").add(new PageBar(pages));
 			}
 		});
 	}

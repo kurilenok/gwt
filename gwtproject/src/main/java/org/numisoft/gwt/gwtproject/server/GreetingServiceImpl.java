@@ -67,7 +67,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 				customer.setModifiedWhen(result.getString("modified_when").substring(0, 19));
 				customers.add(customer);
 			}
-
 			statement.close();
 			connection.close();
 

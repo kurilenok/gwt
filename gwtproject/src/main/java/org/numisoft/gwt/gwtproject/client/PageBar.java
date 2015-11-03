@@ -15,7 +15,7 @@ public class PageBar extends FlexTable {
 
 	public PageBar(int pages) {
 
-		RootPanel.get("pageBar").clear();
+		// RootPanel.get("pageBar").clear();
 
 		for (int p = 1; p <= pages; p++) {
 			final Button pageButton = new Button(Integer.toString(p));
@@ -24,11 +24,12 @@ public class PageBar extends FlexTable {
 				public void onClick(ClickEvent event) {
 					Main.currentPage = Integer.parseInt(pageButton.getText());
 					/* Update result table according to page number selected */
-					ResultTable resultTable = new ResultTable(Main.currentPage);
+					RootPanel.get("tableDiv").clear();
+					RootPanel.get("tableDiv").add(new ResultTable(Main.currentPage));
 				}
 			});
 			setWidget(0, p, pageButton);
 		}
-		RootPanel.get("pageBar").add(this);
+		// RootPanel.get("pageBar").add(this);
 	}
 }
