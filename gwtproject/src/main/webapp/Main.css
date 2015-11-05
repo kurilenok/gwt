@@ -10,6 +10,10 @@ h1 {
   text-align: center;
 }
 
+#loginBar {
+	background-color: #f0f1ed;
+}
+
 #searchBar {
 	background-color: #148aca;
 	padding: 8px;
@@ -101,8 +105,8 @@ h1 {
 	color: #ff0000;
 }
 
-.pageButton {
-	
+.tbLogin {
+	width: 75px;
 }
 
 .sendButton {

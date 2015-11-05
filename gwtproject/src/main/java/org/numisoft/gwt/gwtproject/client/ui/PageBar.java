@@ -1,4 +1,6 @@
-package org.numisoft.gwt.gwtproject.client;
+package org.numisoft.gwt.gwtproject.client.ui;
+
+import org.numisoft.gwt.gwtproject.client.Main;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

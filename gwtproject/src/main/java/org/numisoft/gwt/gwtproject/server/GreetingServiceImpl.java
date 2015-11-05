@@ -17,12 +17,60 @@ import org.numisoft.gwt.gwtproject.shared.CustomerRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * The server side implementation of the RPC service.
+ * Server side implementation of RPC.
  */
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService {
 
-	String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+	// String url =
+	// "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+
+	static String url = "";
+
+	@Override
+	public boolean connectToDB(String port, String user, String pass)
+			throws IllegalArgumentException {
+
+		url = "jdbc:postgresql://localhost:" + port + "/postgres?user=" + user + "&password="
+				+ pass;
+		try {
+			Connection connection = DriverManager.getConnection(url);
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * This method checks if DB tables are available. If DB tables are not
+	 * available, missing tables are created.
+	 * */
+	@Override
+	public void checkTables() throws IllegalArgumentException {
+
+		// url = "jdbc:postgresql://localhost:" + port + "/postgres?user=" +
+		// user + "&password="
+		// + pass;
+
+		try {
+			Connection connection = DriverManager.getConnection(url);
+			DatabaseMetaData dbm = connection.getMetaData();
+			// check if "customers" table is there
+			ResultSet tables = dbm.getTables(null, null, "customers", null);
+			if (!tables.next()) {
+				DBCreator.createTableCustomerTypes();
+				DBCreator.populateTableCustomerTypes();
+				DBCreator.createTableCustomers();
+				DBCreator.populateTableCustomers();
+			}
+			connection.close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * This method returns list of customers upon request from client side
@@ -125,31 +173,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 	}
 
 	/**
-	 * This method checks if DB tables are available. If DB tables are not
-	 * available, missing tables are created.
-	 * */
-	@Override
-	public void checkTables(String tableName) throws IllegalArgumentException {
-
-		try {
-			Connection connection = DriverManager.getConnection(url);
-			DatabaseMetaData dbm = connection.getMetaData();
-			// check if "customers" table is there
-			ResultSet tables = dbm.getTables(null, null, tableName, null);
-
-			if (!tables.next()) {
-				DBCreator.createTableCustomerTypes();
-				DBCreator.populateTableCustomerTypes();
-				DBCreator.createTableCustomers();
-				DBCreator.populateTableCustomers();
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	/**
 	 * This methods deletes customer from DB upon request from client side.
 	 * */
 	@Override
@@ -169,4 +192,5 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 		}
 
 	}
+
 }

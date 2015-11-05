@@ -1,5 +1,8 @@
-package org.numisoft.gwt.gwtproject.client;
+package org.numisoft.gwt.gwtproject.client.ui;
 
+import org.numisoft.gwt.gwtproject.client.GreetingService;
+import org.numisoft.gwt.gwtproject.client.GreetingServiceAsync;
+import org.numisoft.gwt.gwtproject.client.Main;
 import org.numisoft.gwt.gwtproject.shared.Customer;
 import org.numisoft.gwt.gwtproject.shared.Verifier;
 
@@ -103,6 +106,14 @@ public class ResultTable extends FlexTable {
 						public void onClick(ClickEvent event) {
 							if (!Verifier.isEnglish(tbFirstName.getValue() + tbLastName.getValue())) {
 								Main.console.setText("Wrong input, English please!");
+								return;
+							} else if (!Verifier.isNotTooShortOrTooLong(tbFirstName.getValue())) {
+								Main.console
+										.setText("Wrong input, FIRST NAME is too short or too long!");
+								return;
+							} else if (!Verifier.isNotTooShortOrTooLong(tbLastName.getValue())) {
+								Main.console
+										.setText("Wrong input, LAST NAME is too short or too long!");
 								return;
 							}
 

@@ -24,7 +24,7 @@ import org.w3c.dom.NodeList;
  * */
 public abstract class DBCreator {
 
-	private final static String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
+	private final static String url = GreetingServiceImpl.url;
 
 	/* Data to initialize DB table */
 	private static final String DATA = "Tom Brady, Jimmy Garoppolo, LeGarrette Blount,"
@@ -87,9 +87,9 @@ public abstract class DBCreator {
 			create.append("CREATE TABLE customers (");
 			create.append("customer_id serial NOT NULL, ");
 			create.append("title character varying(5) DEFAULT 'Mr.', ");
-			create.append("first_name character varying(50), ");
+			create.append("first_name character varying(50) NOT NULL, ");
 			create.append("first_name_metaphone character varying(50), ");
-			create.append("last_name character varying(50), ");
+			create.append("last_name character varying(50) NOT NULL, ");
 			create.append("last_name_metaphone character varying(50), ");
 			create.append("modified_when timestamp without time zone DEFAULT now(), ");
 			create.append("customer_type_id integer DEFAULT 1, ");
@@ -145,7 +145,15 @@ public abstract class DBCreator {
 	public static void populateTableCustomersFromXML() {
 		List<Customer> customers = new ArrayList<Customer>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		File file = new File("/home/kukolka/NetCracker/data.xml");
+		File file = new File("data.xml");
+
+		// File newFile = new File("./XXX.txt");
+		// try {
+		// newFile.createNewFile();
+		// } catch (IOException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
 		// File file = new File(GWT.getModuleBaseForStaticFiles() +
 		// "xml/data.xml");
